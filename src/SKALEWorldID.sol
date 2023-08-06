@@ -40,10 +40,10 @@ contract SKALEWorldID is WorldIDBridge, Ownable {
     /// @notice Initializes the contract the depth of the associated merkle tree.
     ///
     /// @param _treeDepth The depth of the WorldID Semaphore merkle tree.
-    constructor(uint8 _treeDepth) WorldIDBridge(_treeDepth) {
+    constructor(bool _isMutichain) {
         receiveRootSelector = bytes4(keccak256("receiveRoot(uint256,uint128)"));
         receiveRootHistoryExpirySelector = bytes4(keccak256("setRootHistoryExpiry(uint256)"));
-    //    isMultichain = _isMutichain;
+        isMultichain = _isMutichain;
     }
 
     modifier onlyMessageProxy() {
@@ -54,10 +54,6 @@ contract SKALEWorldID is WorldIDBridge, Ownable {
     modifier onlyMultichainEntry() {
         require(isMultichain, "The chain is not the multchain entry");
         _;
-    }
-
-    function setIsMultichain(bool state) public {
-        isMultichain =state;
     }
 
     function postMessage(bytes32 schainHash, address sender, bytes memory message)
@@ -90,7 +86,7 @@ contract SKALEWorldID is WorldIDBridge, Ownable {
     }
 
     function sendToSchains(bytes memory message) internal 
-    {// let's try to deploy
+    {
 
         for (uint256 i = 0; i < totalChains; i++) 
         {

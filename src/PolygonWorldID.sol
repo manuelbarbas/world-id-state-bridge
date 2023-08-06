@@ -48,7 +48,6 @@ contract PolygonWorldID is WorldIDBridge, FxBaseChildTunnel, Ownable2Step {
     /// @param _fxChild The address of the FxChild tunnel - the contract that will receive messages on Polygon
     /// and Broadcasts them to FxPortal which bridges the messages to Ethereum
     constructor(uint8 _treeDepth, address _fxChild)
-        WorldIDBridge(_treeDepth)
         FxBaseChildTunnel(_fxChild)
     {
         receiveRootSelector = bytes4(keccak256("receiveRoot(uint256,uint128)"));

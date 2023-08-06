@@ -32,7 +32,9 @@ contract DeploySKALEWorldID_2 is Script {
     function run() external {
         vm.startBroadcast(privateKey);
 
-        skaleWorldID = new SKALEWorldID(treeDepth);
+        skaleWorldID = new SKALEWorldID(false);
+
+        skaleWorldID.initSemaphoreVerifier(treeDepth);
 
         vm.stopBroadcast();
     }

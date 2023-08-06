@@ -40,7 +40,7 @@ abstract contract WorldIDBridge is IWorldID {
     uint128 internal constant NULL_ROOT_TIME = 0;
 
     /// @notice The verifier instance needed to operate within the semaphore protocol.
-    SemaphoreVerifier internal semaphoreVerifier = new SemaphoreVerifier();
+    SemaphoreVerifier internal semaphoreVerifier;
 
     ///////////////////////////////////////////////////////////////////////////////
     ///                                  ERRORS                                 ///
@@ -87,7 +87,19 @@ abstract contract WorldIDBridge is IWorldID {
     /// @notice Constructs a new instance of the state bridge.
     ///
     /// @param _treeDepth The depth of the identities merkle tree.
-    constructor(uint8 _treeDepth) {
+    // constructor(uint8 _treeDepth) {
+    //     if (!SemaphoreTreeDepthValidator.validate(_treeDepth)) {
+    //         revert UnsupportedTreeDepth(_treeDepth);
+    //     }
+
+    //     treeDepth = _treeDepth;
+    // }
+
+    function initSemaphoreVerifier(uint8 _treeDepth) external {
+        if(address(semaphoreVerifier) == address(0)){
+            semaphoreVerifier = new SemaphoreVerifier();
+        }
+
         if (!SemaphoreTreeDepthValidator.validate(_treeDepth)) {
             revert UnsupportedTreeDepth(_treeDepth);
         }
